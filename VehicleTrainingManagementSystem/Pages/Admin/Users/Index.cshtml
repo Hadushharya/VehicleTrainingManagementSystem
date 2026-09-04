@@ -1,0 +1,46 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.Users.IndexModel
+@{
+    ViewData["Title"] = "Manage Users";
+    Layout = "_Layout";
+}
+
+<h2>Users</h2>
+<a asp-page="Create" class="btn btn-primary mb-3">+ New User</a>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.Users)
+        {
+            <tr>
+                <td>@u.Username</td>
+                <td>@u.FullName</td>
+                <td>@u.Role</td>
+                <td>@(u.IsActive ? "Active" : "Disabled")</td>
+                <td>@u.CreatedAt.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <form method="post" asp-page-handler="ToggleActive" asp-route-id="@u.Id" class="d-inline">
+                        <button type="submit" class="btn btn-sm @(u.IsActive ? "btn-warning" : "btn-success")">
+                            @(u.IsActive ? "Disable" : "Enable")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

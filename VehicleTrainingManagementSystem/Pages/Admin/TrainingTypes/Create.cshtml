@@ -1,0 +1,83 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.TrainingTypes.CreateModel
+@{
+    ViewData["Title"] = "New Training Type";
+    Layout = "_Layout";
+}
+
+<h2>Create Training Type</h2>
+
+<form method="post" class="col-md-8">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label">Training Name (shown on certificate front)</label>
+        <input asp-for="Input.Name" class="form-control" placeholder="e.g. Vehicle Driving" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Description" class="form-label"></label>
+        <textarea asp-for="Input.Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.DurationInDays" class="form-label"></label>
+        <input asp-for="Input.DurationInDays" type="number" class="form-control" style="max-width:150px;" />
+    </div>
+
+    <hr />
+    <h5>Units of Competency <span class="text-muted small">(shown on certificate back)</span></h5>
+
+    <table class="table table-sm" id="competencyTable">
+        <thead>
+            <tr>
+                <th style="width:35%">Course Code</th>
+                <th>Competency Name</th>
+                <th style="width:60px"></th>
+            </tr>
+        </thead>
+        <tbody id="competencyRows"></tbody>
+    </table>
+
+    <button type="button" id="addRowBtn" class="btn btn-outline-secondary btn-sm mb-3">+ Add Competency</button>
+    <br />
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+<template id="rowTemplate">
+    <tr>
+        <td><input name="Input.Competencies[__INDEX__].Code" class="form-control form-control-sm" placeholder="e.g. VED AUTD 001" /></td>
+        <td><input name="Input.Competencies[__INDEX__].Name" class="form-control form-control-sm" placeholder="e.g. Developing Defensive Driving Behavior" /></td>
+        <td><button type="button" class="btn btn-sm btn-outline-danger remove-row">&times;</button></td>
+    </tr>
+</template>
+
+@section Scripts {
+    <script>
+        let rowIndex = 0;
+        const rowsBody = document.getElementById('competencyRows');
+        const template = document.getElementById('rowTemplate').innerHTML;
+
+        function addRow() {
+            const html = template.replaceAll('__INDEX__', rowIndex);
+            const wrapper = document.createElement('tbody');
+            wrapper.innerHTML = html;
+            rowsBody.appendChild(wrapper.firstElementChild);
+            rowIndex++;
+        }
+
+        document.getElementById('addRowBtn').addEventListener('click', addRow);
+
+        rowsBody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-row')) {
+                e.target.closest('tr').remove();
+            }
+        });
+
+        // Start with 8 blank rows since that matches your typical competency list
+        for (let i = 0; i < 8; i++) addRow();
+    </script>
+}

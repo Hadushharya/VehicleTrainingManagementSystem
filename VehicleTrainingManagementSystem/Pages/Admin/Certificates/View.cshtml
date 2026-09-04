@@ -1,0 +1,157 @@
+﻿@page "{id:int}"
+@model VehicleTrainingManagementSystem.Pages.Admin.Certificates.ViewModel
+@{
+    ViewData["Title"] = "Certificate";
+    Layout = "_Layout";
+}
+
+@if (Model.Certificate == null)
+{
+    <div class="alert alert-danger">Certificate not found.</div>
+}
+else
+{
+    var session = Model.Certificate.TrainingSession;
+    var trainer = session?.Trainer;
+    var trainingType = session?.TrainingType;
+    var competencies = trainingType?.Competencies.OrderBy(c => c.DisplayOrder).ToList() ?? new List<VehicleTrainingManagementSystem.Models.Competency>();
+
+    <div class="no-print mb-3">
+        <button onclick="window.print()" class="btn btn-primary">🖨 Print / Save as PDF</button>
+        <a asp-page="Index" class="btn btn-secondary">Back to Certificates</a>
+    </div>
+
+    <!-- FRONT PAGE -->
+    <div class="certificate-sheet">
+        <div class="cert-border">
+            <div class="cert-letterhead">
+                <img src="~/images/banner.png" class="cert-banner-img" alt="Ecosafe Driving Consulting & Training Academy" />
+            </div>
+
+            <div class="cert-divider"></div>
+
+            <div class="cert-header">
+                <div>
+                    <div class="cert-kicker">CERTIFICATE OF COMPLETION</div>
+                    <div class="cert-course">@trainingType?.Name</div>
+                </div>
+                <div class="cert-number">
+                    <div class="cert-kicker">Certificate No.</div>
+                    <div class="cert-number-value">@Model.Certificate.CertificateNumber</div>
+                </div>
+            </div>
+
+            <div class="cert-body">
+                <div class="cert-photo-col">
+                    @if (!string.IsNullOrEmpty(trainer?.PhotoPath))
+                    {
+                        <img src="@trainer.PhotoPath" class="cert-photo" alt="Trainee Photo" />
+                    }
+                    else
+                    {
+                        <div class="cert-photo-placeholder">No Photo</div>
+                    }
+                </div>
+
+                <div class="cert-main">
+                    <div class="cert-label">THIS IS TO CERTIFY THAT</div>
+                    <div class="cert-name">@trainer?.FullName</div>
+                    <div class="cert-statement">
+                        has successfully completed the above Mentioned driving training program and demonstrated
+                        competence in knowledge, skills, and behavior required.
+                    </div>
+
+                    <div class="cert-grid">
+                        <div>
+                            <div class="cert-label">NATIONAL ID</div>
+                            <div class="cert-value">@(trainer?.NationalId ?? "-")</div>
+                        </div>
+                        <div>
+                            <div class="cert-label">LABOR ID</div>
+                            <div class="cert-value">@(trainer?.LaborId ?? "-")</div>
+                        </div>
+                    </div>
+
+                    <div class="cert-grid">
+                        <div>
+                            <div class="cert-label">ISSUE DATE</div>
+                            <div class="cert-value">@Model.Certificate.IssuedAt.ToString("MMMM d, yyyy")</div>
+                        </div>
+                        <div>
+                            <div class="cert-label">VALID UNTIL</div>
+                            <div class="cert-value">@Model.Certificate.ExpiryDate.ToString("MMMM d, yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cert-qr">
+                    <img src="data:image/png;base64,@Model.QrCodeBase64" alt="QR Code" />
+                    <div class="cert-scan-label">Scan to verify</div>
+                </div>
+            </div>
+
+            <div class="cert-signature-row">
+                <div class="cert-signature">
+                    <div class="cert-sig-line"></div>
+                    <div class="cert-sig-label">Training Head</div>
+                </div>
+                <div class="cert-signature">
+                    <div class="cert-sig-line"></div>
+                    <div class="cert-sig-label">Director</div>
+                </div>
+            </div>
+
+            <div class="cert-footer">
+             
+                <div class="cert-footer-contact">https://ecosafevehiclesdriving.com/ </div>
+                <div class="cert-footer-contact">https://web.facebook.com/profile.php?id=61593450571108 &nbsp;|&nbsp; +251 984440000&nbsp;|&nbsp; +251114620522</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACK PAGE -->
+    <div class="certificate-sheet cert-back-page">
+        <div class="cert-border">
+            <div class="cert-watermark">EcoSafe Consulting Services</div>
+
+            <div class="cert-letterhead">
+                <img src="~/images/logo.jpg" class="cert-letterhead-logo" alt="ABS Logo" />
+                <div class="cert-letterhead-text">
+                    <div class="cert-company-name">EcoSafe Driving Training & Consultancy Sevices</div>
+                </div>
+            </div>
+
+            <div class="cert-divider"></div>
+
+            <div class="cert-back-title">
+                <div class="cert-course-back">@trainingType?.Name</div>
+                <div class="cert-kicker">Unit of Competency</div>
+            </div>
+
+            <div class="cert-back-body">
+                <table class="cert-competency-table">
+                    <tbody>
+                        @foreach (var c in competencies)
+                        {
+                            <tr>
+                                <td class="cert-comp-code">@c.Code</td>
+                                <td class="cert-comp-name">@c.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cert-signature-row">
+                <div class="cert-signature">
+                    <div class="cert-sig-line"></div>
+                    <div class="cert-sig-label">Training Head</div>
+                </div>
+                <div class="cert-signature">
+                    <div class="cert-sig-line"></div>
+                    <div class="cert-sig-label">Director</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,93 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Trainers.RegisterModel
+@{
+    ViewData["Title"] = "Register Trainer";
+    Layout = "_Layout";
+}
+
+<h2>Register New Trainer</h2>
+
+<form method="post" enctype="multipart/form-data" class="col-md-7">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            <label asp-for="Input.FullName" class="form-label"></label>
+            <input asp-for="Input.FullName" class="form-control" />
+            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="Input.Gender" class="form-label"></label>
+            <select asp-for="Input.Gender" asp-items="Html.GetEnumSelectList<VehicleTrainingManagementSystem.Models.Gender>()" class="form-select"></select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.DateOfBirth" class="form-label"></label>
+            <input asp-for="Input.DateOfBirth" type="date" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.PhoneNumber" class="form-label"></label>
+            <input asp-for="Input.PhoneNumber" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.NationalId" class="form-label">National ID</label>
+            <input asp-for="Input.NationalId" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.LaborId" class="form-label">Labor ID</label>
+            <input asp-for="Input.LaborId" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.DrivingLicenseLevel" class="form-label">Driving License Level</label>
+            <input asp-for="Input.DrivingLicenseLevel" class="form-control" placeholder="e.g. Grade 1, Professional" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.DrivingLicenseNumber" class="form-label">Driving License No.</label>
+            <input asp-for="Input.DrivingLicenseNumber" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label"></label>
+        <input asp-for="Input.Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Address" class="form-label"></label>
+        <input asp-for="Input.Address" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Photo" class="form-label">Trainee Photo</label>
+        <input asp-for="Input.Photo" type="file" accept="image/*" class="form-control" />
+        <span asp-validation-for="Input.Photo" class="text-danger"></span>
+    </div>
+
+    <hr />
+    <h5>Training Details</h5>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.TrainingTypeId" class="form-label">Training Type</label>
+            <select asp-for="Input.TrainingTypeId" asp-items="Model.TrainingTypeOptions" class="form-select">
+                <option value="">-- Select Training Type --</option>
+            </select>
+            <span asp-validation-for="Input.TrainingTypeId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="Input.TrainingStartDate" class="form-label">Training Start Date</label>
+            <input asp-for="Input.TrainingStartDate" type="date" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register &amp; Start Training</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

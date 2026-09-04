@@ -1,0 +1,68 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L4 6V11C4 16.5 7.4 21.2 12 22C16.6 21.2 20 16.5 20 11V6L12 2Z" stroke="#D4AF37" stroke-width="1.5" fill="#1B2A4A" />
+                <path d="M9 12L11 14L15 10" stroke="#D4AF37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+
+        <h2 class="login-title">Welcome Back</h2>
+        <p class="login-subtitle">Sign in to the Vehicle Training Management System</p>
+
+        <form method="post">
+            <div asp-validation-summary="All" class="login-error"></div>
+
+            <div class="login-field">
+                <label asp-for="Username" class="login-label"></label>
+                <input asp-for="Username" class="login-input" autofocus placeholder="Enter your username" />
+                <span asp-validation-for="Username" class="login-field-error"></span>
+            </div>
+
+            <div class="login-field">
+                <label asp-for="Password" class="login-label"></label>
+                <div class="login-password-wrapper">
+                    <input asp-for="Password" type="password" class="login-input" placeholder="Enter your password" id="passwordInput" />
+                    <button type="button" class="login-password-toggle" id="togglePassword" aria-label="Show password">
+                        <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8-11-8-11-8Z" stroke="#8892a0" stroke-width="1.6" />
+                            <circle cx="12" cy="12" r="3" stroke="#8892a0" stroke-width="1.6" />
+                        </svg>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="login-field-error"></span>
+            </div>
+
+            <button type="submit" class="login-button">Sign In</button>
+        </form>
+        @section Scripts {
+            <script>
+                        const toggleBtn = document.getElementById('togglePassword');
+                        const passwordInput = document.getElementById('passwordInput');
+                        const eyeIcon = document.getElementById('eyeIcon');
+
+                        toggleBtn?.addEventListener('click', function () {
+                            const isPassword = passwordInput.type === 'password';
+                            passwordInput.type = isPassword ? 'text' : 'password';
+
+                            eyeIcon.innerHTML = isPassword
+                                ? '<path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8-11-8-11-8Z" stroke="#1B2A4A" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#1B2A4A" stroke-width="1.6"/>'
+                                : '<path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8-11-8-11-8Z" stroke="#8892a0" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke="#8892a0" stroke-width="1.6"/>';
+
+                            toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+                        });
+            </script>
+        }
+    </div>
+
+    <div class="login-footer-note">
+        &copy; @DateTime.Now.Year EcoSafe Driving Skills Training &amp; Consultancy Services
+    </div>
+</div>

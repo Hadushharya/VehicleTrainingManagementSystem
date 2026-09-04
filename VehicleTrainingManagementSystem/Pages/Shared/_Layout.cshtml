@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ABS Vehicle Training</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-wrapper">
+
+        <!-- Top Header -->
+        <header class="app-header">
+            <img src="~/images/banner.png" alt="Ecosafe Driving Consulting & Training Academy" class="header-banner" />
+            <button class="sidebar-toggle d-md-none" id="sidebarToggle">&#9776;</button>
+        </header>
+
+        <div class="app-body">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <nav class="app-sidebar" id="appSidebar">
+                    <div class="sidebar-links">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-page="/Admin/Index" class="sidebar-link">Dashboard</a>
+                            <a asp-page="/Admin/Users/Index" class="sidebar-link">Reception Users</a>
+                            <a asp-page="/Admin/TrainingTypes/Index" class="sidebar-link">Training Types</a>
+                            <a asp-page="/Trainers/Index" class="sidebar-link">Trainers</a>
+                            <a asp-page="/Admin/Certificates/Index" class="sidebar-link">Certificates</a>
+                        }
+                        else if (User.IsInRole("Reception"))
+                        {
+                            <a asp-page="/Reception/Index" class="sidebar-link">Dashboard</a>
+                            <a asp-page="/Trainers/Index" class="sidebar-link">Trainers</a>
+                        }
+                    </div>
+
+                    <div class="sidebar-footer">
+                        <div class="sidebar-user">@User.Identity.Name</div>
+                        <div class="sidebar-role">@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</div>
+                        <a asp-page="/Account/ChangePassword" class="sidebar-footer-link">Change Password</a>
+                        <form method="post" asp-page="/Account/Logout">
+                            <button type="submit" class="btn-logout-sidebar">Logout</button>
+                        </form>
+                    </div>
+                </nav>
+            }
+
+            <main class="app-main">
+                @RenderBody()
+            </main>
+        </div>
+        <footer class="app-footer">
+            &copy; @DateTime.Now.Year - Ecosafe Vehicle Training Management System
+            <span class="footer-powered-by">
+                | Powered by <a asp-page="/Profile" class="footer-credit-link">Segen IT Solutions</a>
+            </span>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('sidebarToggle')?.addEventListener('click', function () {
+        document.getElementById('appSidebar')?.classList.toggle('open');
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

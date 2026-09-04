@@ -1,0 +1,38 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_Layout";
+}
+
+<h2>Admin Dashboard</h2>
+<p>Welcome, @User.Identity?.Name</p>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Reception Users</h5>
+            <h2>@Model.ReceptionCount</h2>
+            <a asp-page="/Admin/Users/Index" class="btn btn-sm btn-primary mt-2">Manage</a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Training Types</h5>
+            <h2>@Model.TrainingTypeCount</h2>
+            <a asp-page="/Admin/TrainingTypes/Index" class="btn btn-sm btn-primary mt-2">Manage</a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Registered Trainers</h5>
+            <h2>@Model.TrainerCount</h2>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h5>Certificates Issued</h5>
+            <h2>@Model.CertificateCount</h2>
+        </div>
+    </div>
+</div>

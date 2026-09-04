@@ -1,0 +1,46 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.TrainingTypes.IndexModel
+@{
+    ViewData["Title"] = "Training Types";
+    Layout = "_Layout";
+}
+
+<h2>Training Types</h2>
+<a asp-page="Create" class="btn btn-primary mb-3">+ New Training Type</a>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Duration (days)</th>
+            <th>Competencies</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in Model.Types)
+        {
+            <tr>
+                <td>@t.Name</td>
+                <td>@t.Description</td>
+                <td>@t.DurationInDays</td>
+                <td>@t.Competencies.Count</td>
+                <td>@(t.IsActive ? "Active" : "Disabled")</td>
+                <td>
+                    <form method="post" asp-page-handler="ToggleActive" asp-route-id="@t.Id" class="d-inline">
+                        <button type="submit" class="btn btn-sm @(t.IsActive ? "btn-warning" : "btn-success")">
+                            @(t.IsActive ? "Disable" : "Enable")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

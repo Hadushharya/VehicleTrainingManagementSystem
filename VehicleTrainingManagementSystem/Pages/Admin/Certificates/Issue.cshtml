@@ -1,0 +1,28 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.Certificates.IssueModel
+@{
+    ViewData["Title"] = "Issue Certificate";
+    Layout = "_Layout";
+}
+
+<h2>Issue Certificate</h2>
+
+@if (Model.Session == null)
+{
+    <div class="alert alert-danger">Training session not found.</div>
+}
+else
+{
+    <div class="card p-4 col-md-6">
+        <p><strong>Trainer:</strong> @Model.Session.Trainer?.FullName</p>
+        <p><strong>Training Type:</strong> @Model.Session.TrainingType?.Name</p>
+        <p><strong>National ID:</strong> @Model.Session.Trainer?.NationalId</p>
+        <p><strong>Started:</strong> @Model.Session.StartDate?.ToString("yyyy-MM-dd")</p>
+
+        <form method="post">
+            <input type="hidden" asp-for="SessionId" />
+            <button type="submit" class="btn btn-success">Confirm &amp; Issue Certificate</button>
+            <a asp-page="/Trainers/Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+}

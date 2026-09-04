@@ -1,0 +1,46 @@
+﻿@page
+@model VehicleTrainingManagementSystem.Pages.Admin.Certificates.IndexModel
+@{
+    ViewData["Title"] = "Certificates";
+    Layout = "_Layout";
+}
+
+<h2>Issued Certificates</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Certificate No.</th>
+            <th>Trainer</th>
+            <th>Training Type</th>
+            <th>Issued</th>
+            <th>Verification Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Certificates)
+        {
+            <tr>
+                <td>@c.CertificateNumber</td>
+                <td>@c.TrainingSession?.Trainer?.FullName</td>
+                <td>@c.TrainingSession?.TrainingType?.Name</td>
+                <td>@c.IssuedAt.ToString("yyyy-MM-dd")</td>
+                <td><code>@c.VerificationCode</code></td>
+                <td>
+                    <a asp-page="View" asp-route-id="@c.Id" class="btn btn-sm btn-primary">View / Print</a>
+                    <a asp-page="/Verify/Index" asp-route-code="@c.VerificationCode" target="_blank" class="btn btn-sm btn-outline-secondary">Verify</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,67 @@
+﻿@page "{code?}"
+@model VehicleTrainingManagementSystem.Pages.Verify.IndexModel
+@{
+    ViewData["Title"] = "Certificate Verification";
+    Layout = "_Layout";
+}
+
+<div class="col-md-6 mx-auto mt-4">
+    <h2>Certificate Verification</h2>
+
+    @if (Model.Certificate == null)
+    {
+        <div class="alert alert-danger">
+            <strong>Not Verified.</strong> No certificate found matching this code.
+        </div>
+    }
+    else
+    {
+        var trainer = Model.Certificate.TrainingSession?.Trainer;
+
+        if (Model.IsExpired)
+        {
+            <div class="alert alert-warning">
+                <strong>&#9888; Expired.</strong> This certificate was valid but has since expired.
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success">
+                <strong>&#10003; Verified.</strong> This certificate is authentic.
+            </div>
+        }
+
+        <div class="card p-4 d-flex flex-row gap-3">
+            @if (!string.IsNullOrEmpty(trainer?.PhotoPath))
+            {
+                <img src="@trainer.PhotoPath" alt="Trainee Photo"
+                     style="width:90px;height:110px;object-fit:cover;border:2px solid #D4AF37;border-radius:4px;flex-shrink:0;" />
+            }
+            else
+            {
+                <div style="width:90px;height:110px;border:2px dashed #ccc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;flex-shrink:0;">
+                    No Photo
+                </div>
+            }
+
+            <div>
+                <p><strong>Certificate No.:</strong> @Model.Certificate.CertificateNumber</p>
+                <p><strong>Trainer:</strong> @trainer?.FullName</p>
+                <p><strong>Training Type:</strong> @Model.Certificate.TrainingSession?.TrainingType?.Name</p>
+                <p><strong>Issued:</strong> @Model.Certificate.IssuedAt.ToString("MMMM d, yyyy")</p>
+                <p><strong>Valid Until:</strong> @Model.Certificate.ExpiryDate.ToString("MMMM d, yyyy")</p>
+                <p>
+                    <strong>Status:</strong>
+                    @if (Model.IsExpired)
+                    {
+                        <span class="badge bg-warning text-dark">Expired</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Valid</span>
+                    }
+                </p>
+            </div>
+        </div>
+    }
+</div>
